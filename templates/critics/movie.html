@@ -1,0 +1,43 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="row">
+    <div class="col-1"></div>
+    <div class="col-3">
+        <img src="https://image.tmdb.org/t/p/original/{{ movie.poster_path }}" alt="{{ movie.title }} Poster" class="d-block mx-auto rounded" style="max-height: 500px;">
+    </div>
+    <div class="col-5">
+        <h3 class="text-white">
+            {{ movie.title }}
+            <span class="badge {% if movie.status == 'Released' %}text-bg-success{% else %}text-bg-danger{% endif %}">
+                {{ movie.status }}
+            </span>                       
+        </h3>
+        <p class="text-white">{{ movie.runtime }} min</p>
+        {% if movie.tagline %}
+            <p class="text-white"><em>"{{ movie.tagline }}"</em></p>
+        {% endif %}
+        <p class="text-white">{{ movie.overview }}</p>
+    </div>
+</div>
+
+<br>
+
+<h4 class="text-white">
+    Elenco Principal
+</h4>
+
+<div>
+    <div class="row d-flex">
+        {% for person in cast %}
+        <div class="col-1 text-center">
+            <figure class="figure">
+                <img src="{% if person.profile_path %}https://image.tmdb.org/t/p/original/{{ person.profile_path }}{% else %}text-bg-danger{% endif %}" class="figure-img img-fluid rounded" alt="..." style="max-height: 100px;">
+                <figcaption class="figure-caption text-white">{{ person.name }}</figcaption>
+            </figure>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

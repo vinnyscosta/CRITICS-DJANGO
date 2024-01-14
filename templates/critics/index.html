@@ -1,0 +1,29 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+{% block content %}
+
+    <div id="carouselExample" class="carousel slide bg-dark">
+        <div class="carousel-inner">
+            {% for movie in movies %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    <a href="{% url 'movie' movie.id %}">
+                        <img src="https://image.tmdb.org/t/p/original/{{ movie.backdrop_path }}" alt="{{ movie.title }} Poster" class="img-fluid rounded mx-auto d-block" style="max-height: 500px;">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>{{ movie.title }}</h5>
+                            <p>{{ movie.tagline }}</p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+{% endblock %}
