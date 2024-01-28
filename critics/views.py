@@ -1,13 +1,15 @@
 import requests
 from django.shortcuts import render, redirect
-from critics.movieFunctions import *
 from django.contrib import auth, messages
 from critics.forms import LoginForms
+
+from critics.movieFunctions import *
+from critics.personFunctions import *
 
 def index(request):
     print(request.user)
 
-    data_moviedb = discover()
+    data_moviedb = discoverMovie()
 
     form = LoginForms()
 
@@ -36,11 +38,27 @@ def index(request):
     return render(request, 'critics/index.html', {'movies': data_moviedb,"form": form})
 
 def movie(request,movieId):
-    
-    data_moviedb = movieMore(movieId)
-    cast_moviedb = castMovie(movieId)
 
-    return render(request, 'critics/movie.html', {'movie': data_moviedb,'cast': cast_moviedb,})
+    if not request.user.is_authenticated:
+        messages.error(request, "Usuário não logado")
+        return redirect('index')
+    
+    data_moviedb = moreMovie(movieId)
+    cast_moviedb = castMovie(movieId)
+    provider_moviedb = providersMovie(movieId)
+
+    return render(request, 'critics/movie.html', {'movie': data_moviedb,'cast': cast_moviedb,'providers': provider_moviedb,})
+
+def person(request,personId):
+
+    if not request.user.is_authenticated:
+        messages.error(request, "Usuário não logado")
+        return redirect('index')
+    
+    data_moviedb = morePerson(personId)
+    movies_moviedb = movieCreditsPerson(personId)
+
+    return render(request, 'critics/person.html', {'person': data_moviedb,'movies': movies_moviedb,})
 
 def logout(request):
     auth.logout(request)
