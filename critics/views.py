@@ -12,14 +12,14 @@ def index(request):
 
     data_moviedb = discoverMovie()
 
-    form = LoginForms()
+    formLog = LoginForms()
 
     if request.method == 'POST':
-        form = LoginForms(request.POST)
+        formLog = LoginForms(request.POST)
 
-        if form.is_valid():
-            nome=form['nome_login'].value()
-            senha=form['senha'].value()
+        if formLog.is_valid():
+            nome=formLog['nome_login'].value()
+            senha=formLog['senha'].value()
 
         usuario = auth.authenticate(
             request,
@@ -36,21 +36,22 @@ def index(request):
             messages.error(request, f"Erro ao efetuar login!")
             return redirect('index')
 
-    return render(request, 'critics/index.html', {'movies': data_moviedb,"form": form})
+    return render(request, 'critics/index.html', {'movies': data_moviedb,"formLog": formLog})
 
 def cadastro(request):
     if not request.user.is_authenticated:
 
-        form = CadastroForms()
+        formCad = CadastroForms()
+        formLog = LoginForms()
 
         if request.method == 'POST':
-            form = CadastroForms(request.POST)
+            formCad = CadastroForms(request.POST)
 
-            if form.is_valid():
+            if formCad.is_valid():
 
-                nome=form['nome_cadastro'].value()
-                email=form['email'].value()
-                senha=form['senha_1'].value()
+                nome=formCad['nome_cadastro'].value()
+                email=formCad['email'].value()
+                senha=formCad['senha_1'].value()
 
                 if User.objects.filter(username=nome).exists():
                     messages.error(request, f"Usuario já existente!")
@@ -65,7 +66,7 @@ def cadastro(request):
                 messages.success(request, f"Cadastro efetuado com sucesso!")
                 return redirect('index')
 
-        return render(request, 'critics/cadastro.html', {'form': form})
+        return render(request, 'critics/cadastro.html', {'form': formLog,'formCad':formCad})
     
     else:
         messages.info(request, "Não pode acessar a tela de cadastro pois já está logado !")
