@@ -1,8 +1,9 @@
 import requests
 from django.shortcuts import render, redirect
 from django.contrib import auth, messages
-from critics.forms import LoginForms
+from critics.forms import LoginForms, CadastroForms
 
+from django.contrib.auth.models import User
 from critics.movieFunctions import *
 from critics.personFunctions import *
 
@@ -36,6 +37,39 @@ def index(request):
             return redirect('index')
 
     return render(request, 'critics/index.html', {'movies': data_moviedb,"form": form})
+
+def cadastro(request):
+    if not request.user.is_authenticated:
+
+        form = CadastroForms()
+
+        if request.method == 'POST':
+            form = CadastroForms(request.POST)
+
+            if form.is_valid():
+
+                nome=form['nome_cadastro'].value()
+                email=form['email'].value()
+                senha=form['senha_1'].value()
+
+                if User.objects.filter(username=nome).exists():
+                    messages.error(request, f"Usuario já existente!")
+                    return redirect('cadastro')
+
+                usuario = User.objects.create_user(
+                    username=nome,
+                    email=email,
+                    password=senha
+                )
+                usuario.save()
+                messages.success(request, f"Cadastro efetuado com sucesso!")
+                return redirect('index')
+
+        return render(request, 'critics/cadastro.html', {'form': form})
+    
+    else:
+        messages.info(request, "Não pode acessar a tela de cadastro pois já está logado !")
+        return redirect('index')
 
 def movie(request,movieId):
 
