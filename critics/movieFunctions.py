@@ -2,7 +2,7 @@ import requests
 from django.conf import settings
 
 def discoverMovie():
-    url_moviedb = f"{settings.URL_THE_MOVIE_DB}discover/movie?language=pt-BR&page=1&sort_by=popularity.desc"
+    url_moviedb = f"{settings.URL_THE_MOVIE_DB}trending/movie/week?language=pt-BR&page=1&sort_by=popularity.desc"
     response = requests.get(url_moviedb, headers=settings.HEADERS_THE_MOVIE_DB)
     data_moviedb = response.json().get('results', []) if response.status_code == 200 else []
 

@@ -2,6 +2,7 @@
 {% load static %}
 {% block content %}
 
+    <h3 class="text-center text-white">Filmes do momento</h3>
     <div id="carouselExample" class="carousel slide bg-dark">
         <div class="carousel-inner">
             {% for movie in movies %}
@@ -25,5 +26,33 @@
             <span class="visually-hidden">Next</span>
         </button>
     </div>
+
+    <br>
+
+    <h3 class="text-center text-white">Séries de TV do momento</h3>
+    <div id="carousel2" class="carousel slide bg-dark">
+        <div class="carousel-inner">
+            {% for tv in tvSeries %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    <a href="{% url 'tvSeries' tv.id %}">
+                        <img src="https://image.tmdb.org/t/p/original/{{ tv.backdrop_path }}" alt="{{ tv.name }} Poster" class="img-fluid rounded mx-auto d-block" style="max-height: 500px;">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>{{ tv.name }}</h5>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carousel2" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carousel2" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <br>
 
 {% endblock %}

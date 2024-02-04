@@ -11,7 +11,9 @@ from critics.personFunctions import *
 def index(request):
     print(request.user)
 
-    data_moviedb = discoverMovie()
+    movies_moviedb = discoverMovie()
+    tvSeries = discoverTvSeries()
+
 
     formLog = LoginForms()
 
@@ -37,7 +39,7 @@ def index(request):
             messages.error(request, f"Erro ao efetuar login!")
             return redirect('index')
 
-    return render(request, 'critics/index.html', {'movies': data_moviedb,"formLog": formLog})
+    return render(request, 'critics/index.html', {'movies': movies_moviedb,'tvSeries': tvSeries,'formLog': formLog})
 
 def cadastro(request):
     if not request.user.is_authenticated:
