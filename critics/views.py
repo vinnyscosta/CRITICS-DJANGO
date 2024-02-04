@@ -66,7 +66,7 @@ def cadastro(request):
                 messages.success(request, f"Cadastro efetuado com sucesso!")
                 return redirect('index')
 
-        return render(request, 'critics/cadastro.html', {'form': formLog,'formCad':formCad})
+        return render(request, 'critics/cadastro.html', {'formLog': formLog,'formCad':formCad})
     
     else:
         messages.info(request, "Não pode acessar a tela de cadastro pois já está logado !")
