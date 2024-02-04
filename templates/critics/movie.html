@@ -2,31 +2,10 @@
 {% load static %}
 {% block content %}
 
-<style>
-    .scrolling-container {
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-
-    .scrolling-container::-webkit-scrollbar {
-        width: 12px;
-    }
-
-    .scrolling-container::-webkit-scrollbar-track {
-        background-color: #f1f1f1;
-    }
-
-    .scrolling-container::-webkit-scrollbar-thumb {
-        background-color: #888;
-        border-radius: 6px;
-        border: 3px solid #f1f1f1;
-    }
-</style>
-
 <div class="container-xl">
     <h3 class="text-white text-center">
         {{ movie.title }}
-        <span class="badge {% if movie.status == 'Released' %}text-bg-success{% else %}text-bg-danger{% endif %}">
+        <span class="badge {% if movie.status == 'Released' %}text-bg-success{% else %}{% static 'no-image.jpeg' %}{% endif %}">
             {{ movie.status }}
         </span>                       
     </h3>
@@ -36,6 +15,15 @@
             class="d-block mx-auto rounded" style="max-height: 500px;">
         </div>
         <div class="col-8">
+            
+            {% if movie.genres %}
+                <p class="text-white">
+                    {% for genre in movie.genres %}
+                        | {{ genre.name }}
+                    {% endfor %}
+                </p>
+            {% endif %}
+
             <p class="text-white">{{ movie.runtime }} min</p>
             {% if movie.tagline %}
                 <p class="text-white"><em>"{{ movie.tagline }}"</em></p>
@@ -45,38 +33,38 @@
             {% if providers %}
                 <div class="row text-center">
                     
-                    <div class='col'>
-                        {% if providers.rent %}
+                    {% if providers.rent %}
+                        <div class='col'>
                             <span class="badge rounded-pill text-bg-light">Disponível por aluguel</span><br>
                             {% for provider in providers.rent %}
-                                <img src="{% if provider.logo_path %}https://image.tmdb.org/t/p/original/{{ provider.logo_path }}{% else %}text-bg-danger{% endif %}" 
+                                <img src="{% if provider.logo_path %}https://image.tmdb.org/t/p/original/{{ provider.logo_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}" 
                                 class="rounded" alt="..." style="max-height: 50px;">
                             {% endfor %}
                             <br><br>
-                        {% endif %}
-                    </div>
+                        </div>
+                    {% endif %}
                     
-                    <div class='col'>
-                        {% if providers.buy %}
+                    {% if providers.buy %}
+                        <div class='col'>
                             <span class="badge rounded-pill text-bg-light">Disponível por compra</span><br>
                             {% for provider in providers.buy %}
-                                <img src="{% if provider.logo_path %}https://image.tmdb.org/t/p/original/{{ provider.logo_path }}{% else %}text-bg-danger{% endif %}" 
+                                <img src="{% if provider.logo_path %}https://image.tmdb.org/t/p/original/{{ provider.logo_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}" 
                                 class="rounded" alt="..." style="max-height: 50px;">
                             {% endfor %}
                             <br><br>
-                        {% endif %}
-                    </div>
+                        </div>
+                    {% endif %}
                     
-                    <div class='col'>
-                        {% if providers.flatrate %}
+                    {% if providers.flatrate %}
+                        <div class='col'>
                             <span class="badge rounded-pill text-bg-light">Disponível por assinatura</span><br>
                             {% for provider in providers.flatrate %}
-                                <img src="{% if provider.logo_path %}https://image.tmdb.org/t/p/original/{{ provider.logo_path }}{% else %}text-bg-danger{% endif %}" 
+                                <img src="{% if provider.logo_path %}https://image.tmdb.org/t/p/original/{{ provider.logo_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}" 
                                 class="rounded" alt="..." style="max-height: 50px;">
                             {% endfor %}
                             <br><br>
-                        {% endif %}
-                    </div>
+                        </div>
+                    {% endif %}
                     
                 </div>
 
@@ -96,7 +84,7 @@
             <div class="col-auto text-center" style="max-width: 120px;">
                 <figure class="figure">
                             <a href="{% url 'person' person.id %}">
-                                <img src="{% if person.profile_path %}https://image.tmdb.org/t/p/original/{{ person.profile_path }}{% else %}text-bg-danger{% endif %}" 
+                                <img src="{% if person.profile_path %}https://image.tmdb.org/t/p/original/{{ person.profile_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}" 
                                     class="figure-img img-fluid rounded img-thumbnail" alt="..." style="max-height: 100px;">
                             </a>
                             <figcaption class="text-white text-break text-wrap">{{ person.name }}</figcaption>

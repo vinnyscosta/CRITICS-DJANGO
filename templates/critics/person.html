@@ -2,27 +2,6 @@
 {% load static %}
 {% block content %}
 
-<style>
-    .scrolling-container {
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-
-    .scrolling-container::-webkit-scrollbar {
-        width: 12px;
-    }
-
-    .scrolling-container::-webkit-scrollbar-track {
-        background-color: #f1f1f1;
-    }
-
-    .scrolling-container::-webkit-scrollbar-thumb {
-        background-color: #888;
-        border-radius: 6px;
-        border: 3px solid #f1f1f1;
-    }
-</style>
-
 <div class="container-xl">
     <h3 class="text-white text-center">
         {{ person.name }}                     
@@ -43,14 +22,13 @@
 
     <br>
 
-    <h4 class="text-white">
+    <h4 class="text-white text-center">
         {{ person.name }} em filmes
     </h4>
 
     {% if movies.cast %}
-        <br>
         <h5 class="text-white">
-            Elenco
+            no elenco
         </h4>
         <div>
             <div class="row flex-nowrap overflow-x-auto overflow-y-auto scrolling-container" style="max-height: 220px;">
@@ -58,7 +36,7 @@
                     <div class="col-auto text-center" style="max-width: 120px;">
                         <figure class="figure">
                             <a href="{% url 'movie' movie.id %}">
-                                <img src="{% if movie.poster_path %}https://image.tmdb.org/t/p/original/{{ movie.poster_path }}{% else %}text-bg-danger{% endif %}" 
+                                <img src="{% if movie.poster_path %}https://image.tmdb.org/t/p/original/{{ movie.poster_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}" 
                                     class="figure-img img-fluid rounded img-thumbnail" alt="..."  style="max-height: 100px;">
                             </a>
                             <figcaption class="text-white text-break text-wrap">{{ movie.title }}</figcaption>
@@ -71,29 +49,80 @@
     {% endif %}
 
     <br>
-
+    
     {% if movies.crew %}
-        <br>
         <h5 class="text-white">
-            Equipe
+            {{ person.name }} na equipe
         </h4>
         <div>
             <div class="row flex-nowrap overflow-x-auto overflow-y-auto scrolling-container" style="max-height: 220px;">
                 {% for movie in movies.crew %}
-                    <div class="col-auto text-center" style="max-width: 120px;">
-                        <figure class="figure">
-                            <a href="{% url 'movie' movie.id %}">
-                                <img src="{% if movie.poster_path %}https://image.tmdb.org/t/p/original/{{ movie.poster_path }}{% else %}text-bg-danger{% endif %}" 
-                                    class="figure-img img-fluid rounded img-thumbnail" alt="..." style="max-height: 100px;">
-                            </a>
-                            <figcaption class="text-white text-break text-wrap">{{ movie.title }}</figcaption>
-                            <figcaption class="text-white text-break text-wrap fst-italic figure-caption">{{ movie.job }}</figcaption>
-                        </figure>
-                    </div>
+                <div class="col-auto text-center" style="max-width: 120px;">
+                    <figure class="figure">
+                        <a href="{% url 'movie' movie.id %}">
+                            <img src="{% if movie.poster_path %}https://image.tmdb.org/t/p/original/{{ movie.poster_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}" 
+                            class="figure-img img-fluid rounded img-thumbnail" alt="..." style="max-height: 100px;">
+                        </a>
+                        <figcaption class="text-white text-break text-wrap">{{ movie.title }}</figcaption>
+                        <figcaption class="text-white text-break text-wrap fst-italic figure-caption">{{ movie.job }}</figcaption>
+                    </figure>
+                </div>
                 {% endfor %}
             </div>
         </div>
     {% endif %}
+    
+    <br><br>
+
+    <h4 class="text-white text-center">
+        {{ person.name }} em Séries de TV
+    </h4>
+    
+        {% if tvSeries.cast %}
+            <h5 class="text-white">
+                {{ person.name }} no elenco
+            </h4>
+            <div>
+                <div class="row flex-nowrap overflow-x-auto overflow-y-auto scrolling-container" style="max-height: 220px;">
+                    {% for tv in tvSeries.cast %}
+                        <div class="col-auto text-center" style="max-width: 120px;">
+                            <figure class="figure">
+                                <a href="{% url 'tvSeries' tv.id %}">
+                                    <img src="{% if tv.poster_path %}https://image.tmdb.org/t/p/original/{{ tv.poster_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}" 
+                                        class="figure-img img-fluid rounded img-thumbnail" alt="..." style="max-height: 100px;">
+                                </a>
+                                <figcaption class="text-white text-break text-wrap">{{ tv.name }}</figcaption>
+                                <figcaption class="text-white text-break text-wrap fst-italic figure-caption">{{ tv.character }}</figcaption>
+                            </figure>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        <br>
+    
+        {% if tvSeries.crew %}
+            <h5 class="text-white">
+                {{ person.name }} na equipe
+            </h4>
+            <div>
+                <div class="row flex-nowrap overflow-x-auto overflow-y-auto scrolling-container" style="max-height: 220px;">
+                    {% for tv in tvSeries.crew %}
+                    <div class="col-auto text-center" style="max-width: 120px;">
+                        <figure class="figure">
+                            <a href="{% url 'tvSeries' tv.id %}">
+                                <img src="{% if tv.poster_path %}https://image.tmdb.org/t/p/original/{{ tv.poster_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}" 
+                                class="figure-img img-fluid rounded img-thumbnail" alt="..." style="max-height: 100px;">
+                            </a>
+                            <figcaption class="text-white text-break text-wrap">{{ tv.name }}</figcaption>
+                            <figcaption class="text-white text-break text-wrap fst-italic figure-caption">{{ tv.job }}</figcaption>
+                        </figure>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
 
     <br>
 

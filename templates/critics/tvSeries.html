@@ -1,0 +1,154 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container-xl">
+    <h3 class="text-white text-center">
+        {{ tvSeries.name }}
+        <span class="badge {% if tvSeries.status == 'Canceled' %}text-bg-danger{% else %}text-bg-success{% endif %}">
+            {{ tvSeries.status }}
+        </span>                       
+    </h3>
+    <div class="row">
+        <div class="col-auto">
+            <img src="https://image.tmdb.org/t/p/original/{{ tvSeries.poster_path }}" alt="{{ tvSeries.title }} Poster" 
+            class="d-block mx-auto rounded" style="max-height: 500px;">
+        </div>
+        <div class="col-8">
+            
+            {% if tvSeries.genres %}
+                <p class="text-white">
+                    {% for genre in tvSeries.genres %}
+                        | {{ genre.name }}
+                    {% endfor %}
+                </p>
+            {% endif %}
+
+            <p class="text-white">inicio {{ tvSeries.first_air_date }}</p>
+            <p class="text-white">fim {{ tvSeries.last_air_date }}</p>
+            <p class="text-white">
+                {% if tvSeries.episode_run_time %}
+                    {{ tvSeries.episode_run_time }} 
+                    min. por episódio
+                {% endif %}
+            </p>
+            {% if tvSeries.tagline %}
+                <p class="text-white"><em>"{{ tvSeries.tagline }}"</em></p>
+            {% endif %}
+            <p class="text-white">{{ tvSeries.overview }}</p>
+
+            {% if tvSeries.created_by %}
+                <h4 class="text-white">
+                    Criadores
+                </h4>
+                <div>
+                    <div class="row flex-nowrap overflow-x-auto overflow-y-auto scrolling-container" style="max-height: 220px;">
+                        {% for creator in tvSeries.created_by %}
+                        <div class="col-auto text-center" style="max-width: 120px;">
+                            <figure class="figure">
+                                <a href="{% url 'person' creator.id %}">
+                                    <img src="{% if creator.profile_path %}https://image.tmdb.org/t/p/original/{{ creator.profile_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}" 
+                                    class="figure-img img-fluid rounded img-thumbnail" alt="..." style="max-height: 100px;">
+                                </a>
+                                <figcaption class="text-white text-break text-wrap">{{ creator.name }}</figcaption>
+                                <figcaption class="text-white text-break text-wrap fst-italic figure-caption">{{ season.episode_count }} episódios</figcaption>
+                            </figure>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if providers %}
+                <div class="row text-center">
+                    
+                    {% if providers.rent %}
+                        <div class='col'>
+                            <span class="badge rounded-pill text-bg-light">Disponível por aluguel</span><br>
+                            {% for provider in providers.rent %}
+                                <img src="{% if provider.logo_path %}https://image.tmdb.org/t/p/original/{{ provider.logo_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}" 
+                                class="rounded" alt="..." style="max-height: 50px;">
+                            {% endfor %}
+                            <br><br>
+                        </div>
+                    {% endif %}
+                    
+                    {% if providers.buy %}
+                        <div class='col'>
+                            <span class="badge rounded-pill text-bg-light">Disponível por compra</span><br>
+                            {% for provider in providers.buy %}
+                                <img src="{% if provider.logo_path %}https://image.tmdb.org/t/p/original/{{ provider.logo_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}" 
+                                class="rounded" alt="..." style="max-height: 50px;">
+                            {% endfor %}
+                            <br><br>
+                        </div>
+                    {% endif %}
+                    
+                    {% if providers.flatrate %}
+                        <div class='col'>
+                            <span class="badge rounded-pill text-bg-light">Disponível por assinatura</span><br>
+                            {% for provider in providers.flatrate %}
+                                <img src="{% if provider.logo_path %}https://image.tmdb.org/t/p/original/{{ provider.logo_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}" 
+                                class="rounded" alt="..." style="max-height: 50px;">
+                            {% endfor %}
+                            <br><br>
+                        </div>
+                    {% endif %}
+                    
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <br>
+
+    {% if tvSeries.seasons %}
+
+        <h4 class="text-white">
+            Temporadas
+        </h4>
+
+        <div>
+            <div class="row flex-nowrap overflow-x-auto overflow-y-auto scrolling-container" style="max-height: 220px;">
+                {% for season in tvSeries.seasons %}
+                <div class="col-auto text-center" style="max-width: 120px;">
+                    <figure class="figure">
+                                <!-- <a href="#"> -->
+                                    <img src="{% if season.poster_path %}https://image.tmdb.org/t/p/original/{{ season.poster_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}" 
+                                        class="figure-img img-fluid rounded img-thumbnail" alt="..." style="max-height: 100px;">
+                                <!-- </a> -->
+                                <figcaption class="text-white text-break text-wrap">{{ season.name }}</figcaption>
+                                <figcaption class="text-white text-break text-wrap fst-italic figure-caption">{{ season.episode_count }} episódios</figcaption>
+                            </figure>
+                        </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    {% endif %}
+
+    <h4 class="text-white">
+        Elenco e Equipe
+    </h4>
+
+    <div>
+        <div class="row flex-nowrap overflow-x-auto overflow-y-auto scrolling-container" style="max-height: 220px;">
+            {% for person in cast %}
+            <div class="col-auto text-center" style="max-width: 120px;">
+                <figure class="figure">
+                            <a href="{% url 'person' person.id %}">
+                                <img src="{% if person.profile_path %}https://image.tmdb.org/t/p/original/{{ person.profile_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}" 
+                                    class="figure-img img-fluid rounded img-thumbnail" alt="..." style="max-height: 100px;">
+                            </a>
+                            <figcaption class="text-white text-break text-wrap">{{ person.name }}</figcaption>
+                            <figcaption class="text-white text-break text-wrap fst-italic figure-caption">{{ person.known_for_department }}</figcaption>
+                        </figure>
+                    </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <br>
+
+</div>
+{% endblock %}

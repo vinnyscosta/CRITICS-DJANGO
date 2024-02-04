@@ -5,6 +5,7 @@ from critics.forms import LoginForms, CadastroForms
 
 from django.contrib.auth.models import User
 from critics.movieFunctions import *
+from critics.tvSeriesFunctions import *
 from critics.personFunctions import *
 
 def index(request):
@@ -84,6 +85,18 @@ def movie(request,movieId):
 
     return render(request, 'critics/movie.html', {'movie': data_moviedb,'cast': cast_moviedb,'providers': provider_moviedb,})
 
+def tvSeries(request,tvSeriesId):
+   
+    if not request.user.is_authenticated:
+        messages.error(request, "Usuário não logado")
+        return redirect('index')
+    
+    data_moviedb = moreTvSeries(tvSeriesId)
+    cast_moviedb = castTvSeries(tvSeriesId)
+    provider_moviedb = providersTvSeries(tvSeriesId)
+
+    return render(request, 'critics/tvSeries.html', {'tvSeries': data_moviedb,'cast': cast_moviedb,'providers': provider_moviedb,}) 
+
 def person(request,personId):
 
     if not request.user.is_authenticated:
@@ -92,8 +105,14 @@ def person(request,personId):
     
     data_moviedb = morePerson(personId)
     movies_moviedb = movieCreditsPerson(personId)
+    tv_moviedb = TvCreditsPerson(personId)
 
-    return render(request, 'critics/person.html', {'person': data_moviedb,'movies': movies_moviedb,})
+    return render(request, 'critics/person.html', {'person': data_moviedb,'movies': movies_moviedb,'tvSeries':tv_moviedb,})
+
+# def search(request,searchText):
+#     formLog = LoginForms()
+#     searchResults = searchMovieDb(searchText)
+#     return render(request, 'critics/index.html', {'results': results,"formLog": formLog})
 
 def logout(request):
     auth.logout(request)
