@@ -37,8 +37,9 @@
                     <a class="nav-link" href="#">Trending</a>
                 </li>
             </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <form class="d-flex" role="search" action="{% url 'search' 1 %}" method="POST">
+                {% csrf_token %}
+                <input class="form-control me-2" name = "searchText" id="searchText" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-light" type="submit">Search</button>
             </form>
         </div>
@@ -66,7 +67,7 @@
                             {% endfor %}
                         </div>
                     </div>
-                    <div class="modal-footer" action="{% url 'search' %}" method="POST">
+                    <div class="modal-footer">
                         <a type="button" class="btn btn-secondary">Cadastrar</a>
                         <button type="submit" class="btn btn-success">Logar</button>
                     </div>

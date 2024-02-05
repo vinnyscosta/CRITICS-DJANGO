@@ -2,7 +2,27 @@
 {% load static %}
 {% block content %}
 
-    <h3 class="text-center text-white">Filmes do momento</h3>
+    <div class="container-xl">
+        <h3 class="text-center text-white">Descubra Atores</h3>
+        <div class="row flex-nowrap overflow-x-auto overflow-y-auto scrolling-container" style="max-height: 220px;">
+            {% for person in people %}
+            <div class="col-auto text-center" style="max-width: 120px;">
+                <figure class="figure">
+                            <a href="{% url 'person' person.id %}">
+                                <img src="{% if person.profile_path %}https://image.tmdb.org/t/p/original/{{ person.profile_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}" 
+                                    class="figure-img img-fluid rounded img-thumbnail" alt="..." style="max-height: 100px;">
+                            </a>
+                            <figcaption class="text-white text-break text-wrap">{{ person.name }}</figcaption>
+                            <figcaption class="text-white text-break text-wrap fst-italic figure-caption">{{ person.known_for_department }}</figcaption>
+                        </figure>
+                    </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <br>
+
+    <h3 class="text-center text-white">Descubra Filmes</h3>
     <div id="carouselExample" class="carousel slide bg-dark">
         <div class="carousel-inner">
             {% for movie in movies %}
@@ -29,13 +49,14 @@
 
     <br>
 
-    <h3 class="text-center text-white">Séries de TV do momento</h3>
+    <h3 class="text-center text-white">Descubra Séries de TV</h3>
     <div id="carousel2" class="carousel slide bg-dark">
         <div class="carousel-inner">
             {% for tv in tvSeries %}
                 <div class="carousel-item {% if forloop.first %}active{% endif %}">
                     <a href="{% url 'tvSeries' tv.id %}">
-                        <img src="https://image.tmdb.org/t/p/original/{{ tv.backdrop_path }}" alt="{{ tv.name }} Poster" class="img-fluid rounded mx-auto d-block" style="max-height: 500px;">
+                        <img src="{% if tv.backdrop_path %}https://image.tmdb.org/t/p/original/{{ tv.backdrop_path }}{% else %}{% static 'no-backdrop_path.jpeg' %}{% endif %}" 
+                        alt="{{ tv.name }} Poster" class="img-fluid rounded mx-auto d-block" style="max-height: 500px;">
                         <div class="carousel-caption d-none d-md-block">
                             <h5>{{ tv.name }}</h5>
                         </div>

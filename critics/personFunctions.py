@@ -1,6 +1,13 @@
 import requests
 from django.conf import settings
 
+def discoverPeople():
+    url_moviedb = f"{settings.URL_THE_MOVIE_DB}discover/person?language=pt-BR&page=1&sort_by=popularity.desc"
+    response = requests.get(url_moviedb, headers=settings.HEADERS_THE_MOVIE_DB)
+    data_moviedb = response.json().get('results', []) if response.status_code == 200 else []
+
+    return data_moviedb
+
 def morePerson(personId):
     url_moviedb = f"{settings.URL_THE_MOVIE_DB}person/{personId}?language=pt-BR"
     print(url_moviedb)

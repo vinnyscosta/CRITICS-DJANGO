@@ -1,0 +1,9 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+{% block content %}
+
+    {% for result in results %}
+        <p class="text-white">{{ result }}</p>
+    {% endfor %}
+
+{% endblock %}

@@ -4,6 +4,7 @@ from django.contrib import auth, messages
 from critics.forms import LoginForms, CadastroForms
 
 from django.contrib.auth.models import User
+from critics.searchFunctions import *
 from critics.movieFunctions import *
 from critics.tvSeriesFunctions import *
 from critics.personFunctions import *
@@ -11,9 +12,9 @@ from critics.personFunctions import *
 def index(request):
     print(request.user)
 
+    people_moviedb = discoverPeople()
     movies_moviedb = discoverMovie()
-    tvSeries = discoverTvSeries()
-
+    tvSeries_moviedb = discoverTvSeries()
 
     formLog = LoginForms()
 
@@ -39,7 +40,7 @@ def index(request):
             messages.error(request, f"Erro ao efetuar login!")
             return redirect('index')
 
-    return render(request, 'critics/index.html', {'movies': movies_moviedb,'tvSeries': tvSeries,'formLog': formLog})
+    return render(request, 'critics/index.html', {'people':people_moviedb, 'movies': movies_moviedb,'tvSeries': tvSeries_moviedb,'formLog': formLog})
 
 def cadastro(request):
     if not request.user.is_authenticated:
@@ -111,10 +112,11 @@ def person(request,personId):
 
     return render(request, 'critics/person.html', {'person': data_moviedb,'movies': movies_moviedb,'tvSeries':tv_moviedb,})
 
-# def search(request,searchText):
-#     formLog = LoginForms()
-#     searchResults = searchMovieDb(searchText)
-#     return render(request, 'critics/index.html', {'results': results,"formLog": formLog})
+def search(request,page):
+    formLog = LoginForms()
+    searchText = request.POST.get('searchText')
+    searchResults, total_pages = searchMovieDb(searchText,page)
+    return render(request, 'critics/search.html', {'results': searchResults,"formLog": formLog})
 
 def logout(request):
     auth.logout(request)
