@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from critics.searchFunctions import *
 from critics.movieFunctions import *
 from critics.tvSeriesFunctions import *
+from critics.seasonFunctions import *
 from critics.personFunctions import *
 
 def index(request):
@@ -99,6 +100,33 @@ def tvSeries(request,tvSeriesId):
     provider_moviedb = providersTvSeries(tvSeriesId)
 
     return render(request, 'critics/tvSeries.html', {'tvSeries': data_moviedb,'cast': cast_moviedb,'providers': provider_moviedb,}) 
+
+def season(request,tvSeriesId,seasonNumber):
+   
+    if not request.user.is_authenticated:
+        messages.error(request, "Usuário não logado")
+        return redirect('index')
+    
+    tvSeries_moviedb = moreTvSeries(tvSeriesId)
+    season_moviedb = moreSeason(tvSeriesId,seasonNumber)
+    cast_moviedb = castSeason(tvSeriesId,seasonNumber)
+    provider_moviedb = providersSeason(tvSeriesId)
+
+    return render(request, 'critics/season.html', {'tvSeries': tvSeries_moviedb,'season': season_moviedb,'cast': cast_moviedb,'providers': provider_moviedb,}) 
+
+def episode(request,tvSeriesId,seasonNumber,episodeNumber):
+   
+    if not request.user.is_authenticated:
+        messages.error(request, "Usuário não logado")
+        return redirect('index')
+    
+    data_moviedb = moreSeason(tvSeriesId,seasonNumber)
+    season_moviedb = moreSeason(tvSeriesId,seasonNumber)
+    cast_moviedb = castSeason(tvSeriesId,seasonNumber)
+    provider_moviedb = providersSeason(tvSeriesId)
+
+    return render(request, 'critics/episode.html', {'season': data_moviedb,'cast': cast_moviedb,'providers': provider_moviedb,}) 
+
 
 def person(request,personId):
 
