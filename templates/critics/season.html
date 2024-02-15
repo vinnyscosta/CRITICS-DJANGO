@@ -3,15 +3,24 @@
 {% block content %}
 
 <div class="container-xl">
+
+    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item text-white"><a href="{% url 'index' %}">Home</a></li>
+          <li class="breadcrumb-item text-white"><a href="{% url 'tvSeries' tvSeriesId %}">Série</a></li>
+          <li class="breadcrumb-item active text-white" aria-current="page">Temporada {{ season.season_number }} - {{ season.name }}</li>
+        </ol>
+    </nav>
+
     <h3 class="text-white text-center">
-        {{ season.name }}                     
+        Temporada {{ season.season_number }} - {{ season.name }}
     </h3>
     <div class="row">
-        <div class="col-auto">
+        <div class="col-6 col-md-4">
             <img src="{% if season.poster_path %}https://image.tmdb.org/t/p/original/{{ season.poster_path }}{% else %}{% static 'no-backdrop_path.jpeg' %}{% endif %}" alt="{{ season.title }} Poster" 
             class="d-block mx-auto rounded" style="max-height: 500px;">
         </div>
-        <div class="col-8">
+        <div class="col-sm-6 col-md-8">
 
             <p class="text-white">estreia {{ season.air_date }}</p>
             <p class="text-white">
@@ -50,6 +59,45 @@
 
             {% endif %}
 
+            {% if providers %}
+                <div class="row text-center">
+                    
+                    {% if providers.rent %}
+                        <div class='col'>
+                            <span class="badge rounded-pill text-bg-light">Disponível por aluguel</span><br>
+                            {% for provider in providers.rent %}
+                                <img src="{% if provider.logo_path %}https://image.tmdb.org/t/p/original/{{ provider.logo_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}" 
+                                class="rounded" alt="..." style="max-height: 50px;">
+                            {% endfor %}
+                            <br><br>
+                        </div>
+                    {% endif %}
+                    
+                    {% if providers.buy %}
+                        <div class='col'>
+                            <span class="badge rounded-pill text-bg-light">Disponível por compra</span><br>
+                            {% for provider in providers.buy %}
+                                <img src="{% if provider.logo_path %}https://image.tmdb.org/t/p/original/{{ provider.logo_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}" 
+                                class="rounded" alt="..." style="max-height: 50px;">
+                            {% endfor %}
+                            <br><br>
+                        </div>
+                    {% endif %}
+                    
+                    {% if providers.flatrate %}
+                        <div class='col'>
+                            <span class="badge rounded-pill text-bg-light">Disponível por assinatura</span><br>
+                            {% for provider in providers.flatrate %}
+                                <img src="{% if provider.logo_path %}https://image.tmdb.org/t/p/original/{{ provider.logo_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}" 
+                                class="rounded" alt="..." style="max-height: 50px;">
+                            {% endfor %}
+                            <br><br>
+                        </div>
+                    {% endif %}
+                    
+                </div>
+            {% endif %}
+
         </div>
     </div>
 
@@ -72,7 +120,7 @@
                         <span>{{ episode.runtime }} min.</span>
                         <h5 class="card-title">{{ episode.name }}</h5>
                         <p class="card-text text-break text-wrap">{{ episode.overview }}</p>
-                        <a href="{% url 'episode' tvSeries.id season.season_number episode.episode_number %}" class="btn btn-primary">Mais Detalhes...</a>
+                        <a href="{% url 'episode' tvSeriesId season.season_number episode.episode_number %}" class="btn btn-primary">Mais Detalhes...</a>
                     </div>
                 </div>
             

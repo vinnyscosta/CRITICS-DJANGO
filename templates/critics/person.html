@@ -7,11 +7,11 @@
         {{ person.name }}                     
     </h3>
     <div class="row">
-        <div class="col-auto">
-            <img src="https://image.tmdb.org/t/p/original/{{ person.profile_path }}" alt="{{ movie.title }} Poster" 
+        <div class="col-6 col-md-4">
+            <img src="{% if person.profile_path %}https://image.tmdb.org/t/p/original/{{ person.profile_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}" alt="{{ movie.title }} Poster" 
             class="d-block mx-auto rounded" style="max-height: 500px;">
         </div>
-        <div class="col-8">
+        <div class="col-sm-6 col-md-8">
             <p class="text-white">
                 {% if person.birthday %} Birthday: {{ person.birthday }} {% endif %}
                 {% if person.deathday %} Deathday: {{ person.deathday }} {% endif %}

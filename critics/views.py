@@ -87,7 +87,13 @@ def movie(request,movieId):
     cast_moviedb = castMovie(movieId)
     provider_moviedb = providersMovie(movieId)
 
-    return render(request, 'critics/movie.html', {'movie': data_moviedb,'cast': cast_moviedb,'providers': provider_moviedb,})
+    return render(request, 'critics/movie.html', 
+                  {
+                    'pageTitle':data_moviedb['title'] if data_moviedb else 'Pagina não encontrada',
+                    'movie': data_moviedb,
+                    'cast': cast_moviedb,
+                    'providers': provider_moviedb,
+                    })
 
 def tvSeries(request,tvSeriesId):
    
@@ -99,7 +105,13 @@ def tvSeries(request,tvSeriesId):
     cast_moviedb = castTvSeries(tvSeriesId)
     provider_moviedb = providersTvSeries(tvSeriesId)
 
-    return render(request, 'critics/tvSeries.html', {'tvSeries': data_moviedb,'cast': cast_moviedb,'providers': provider_moviedb,}) 
+    return render(request, 'critics/tvSeries.html', 
+                  {
+                    'pageTitle': f"TV Show - {data_moviedb['name']}" if data_moviedb else 'Pagina não encontrada',
+                    'tvSeries': data_moviedb,
+                    'cast': cast_moviedb,
+                    'providers': provider_moviedb,
+                    }) 
 
 def season(request,tvSeriesId,seasonNumber):
    
@@ -107,12 +119,18 @@ def season(request,tvSeriesId,seasonNumber):
         messages.error(request, "Usuário não logado")
         return redirect('index')
     
-    tvSeries_moviedb = moreTvSeries(tvSeriesId)
     season_moviedb = moreSeason(tvSeriesId,seasonNumber)
     cast_moviedb = castSeason(tvSeriesId,seasonNumber)
     provider_moviedb = providersSeason(tvSeriesId)
 
-    return render(request, 'critics/season.html', {'tvSeries': tvSeries_moviedb,'season': season_moviedb,'cast': cast_moviedb,'providers': provider_moviedb,}) 
+    return render(request, 'critics/season.html', 
+                  {
+                    'pageTitle': f"Temporada - {season_moviedb['name']}" if season_moviedb else 'Pagina não encontrada',
+                    'tvSeriesId': tvSeriesId,
+                    'season': season_moviedb,
+                    'cast': cast_moviedb,
+                    'providers': provider_moviedb,
+                    }) 
 
 def episode(request,tvSeriesId,seasonNumber,episodeNumber):
    
@@ -120,13 +138,19 @@ def episode(request,tvSeriesId,seasonNumber,episodeNumber):
         messages.error(request, "Usuário não logado")
         return redirect('index')
     
-    data_moviedb = moreSeason(tvSeriesId,seasonNumber)
-    season_moviedb = moreSeason(tvSeriesId,seasonNumber)
-    cast_moviedb = castSeason(tvSeriesId,seasonNumber)
+    episode_moviedb = moreEpisode(tvSeriesId,seasonNumber,episodeNumber)
+    cast_moviedb = castEpisode(tvSeriesId,seasonNumber,episodeNumber)
     provider_moviedb = providersSeason(tvSeriesId)
 
-    return render(request, 'critics/episode.html', {'season': data_moviedb,'cast': cast_moviedb,'providers': provider_moviedb,}) 
-
+    return render(request, 'critics/episode.html', 
+                  {
+                    'pageTitle': f"Episódio - {episode_moviedb['name']}" if episode_moviedb else 'Pagina não encontrada',
+                    'tvSeriesId': tvSeriesId,
+                    'seasonNumber': seasonNumber,
+                    'episode': episode_moviedb,
+                    'cast': cast_moviedb,
+                    'providers': provider_moviedb,
+                    }) 
 
 def person(request,personId):
 

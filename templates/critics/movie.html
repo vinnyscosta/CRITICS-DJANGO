@@ -10,18 +10,20 @@
         </span>                       
     </h3>
     <div class="row">
-        <div class="col-auto">
+        <div class="col-6 col-md-4">
             <img src="https://image.tmdb.org/t/p/original/{{ movie.poster_path }}" alt="{{ movie.title }} Poster" 
             class="d-block mx-auto rounded" style="max-height: 500px;">
         </div>
-        <div class="col-8">
+        <div class="col-sm-6 col-md-8">
             
             {% if movie.genres %}
-                <p class="text-white">
-                    {% for genre in movie.genres %}
-                        | {{ genre.name }}
-                    {% endfor %}
-                </p>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        {% for genre in movie.genres %}
+                        <li class="breadcrumb-item text-white">{{ genre.name }}</li>
+                        {% endfor %}
+                    </ol>
+                </nav>
             {% endif %}
 
             <p class="text-white">{{ movie.runtime }} min</p>
