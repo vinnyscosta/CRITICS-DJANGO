@@ -14,7 +14,7 @@
         <div class="col-sm-6 col-md-8">
             <p class="text-white">
                 {% if person.birthday %} <i class="fa-solid fa-cake-candles"></i> {{ person.birthday }} {% endif %}
-                {% if person.deathday %} Deathday: {{ person.deathday }} {% endif %}
+                {% if person.deathday %} <i class="fa-solid fa-cross"></i> {{ person.deathday }} {% endif %}
             </p>
             <p class="text-white">{{ person.biography }}</p>
         </div>

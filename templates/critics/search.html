@@ -24,16 +24,14 @@
                 {% if result.media_type == 'movie' %}
 
                 <div class="col">
-                    <a href="{% url 'movie' result.id %}">
-                        <div class="card text-center h-100">
-                            <img src="{% if result.poster_path %}https://image.tmdb.org/t/p/original/{{ result.poster_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}"
-                            class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h6 class="card-title">{{ result.title }}</h6>
-                            </div>
-                            <div class="card-footer mt-auto">
-                                <small class="text-body-dark"><i class="fa-solid fa-film"></i> Filme</small>
-                            </div>
+                    <a href="{% url 'movie' result.id %}" class="card text-center h-100 no-underline">
+                        <img src="{% if result.poster_path %}https://image.tmdb.org/t/p/original/{{ result.poster_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}"
+                        class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h6 class="card-title">{{ result.title }}</h6>
+                        </div>
+                        <div class="card-footer mt-auto">
+                            <small class="text-body-dark"><i class="fa-solid fa-film"></i> Filme</small>
                         </div>
                     </a>
                 </div>
@@ -41,16 +39,14 @@
                 {% elif result.media_type == 'tv' %}
 
                 <div class="col">
-                    <a href="{% url 'tvSeries' result.id %}">
-                        <div class="card text-center h-100">
-                            <img src="{% if result.poster_path %}https://image.tmdb.org/t/p/original/{{ result.poster_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}"
-                            class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h6 class="card-title">{{ result.name }}</h6>
-                            </div>
-                            <div class="card-footer mt-auto">
-                                <small class="text-body-dark"><i class="fa-solid fa-tv"></i> Série de TV</small>
-                            </div>
+                    <a href="{% url 'tvSeries' result.id %}" class="card text-center h-100 no-underline">
+                        <img src="{% if result.poster_path %}https://image.tmdb.org/t/p/original/{{ result.poster_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}"
+                        class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h6 class="card-title">{{ result.name }}</h6>
+                        </div>
+                        <div class="card-footer mt-auto">
+                            <small class="text-body-dark"><i class="fa-solid fa-tv"></i> Série de TV</small>
                         </div>
                     </a>
                 </div>
@@ -58,16 +54,14 @@
                 {% elif result.media_type == 'person' %}
 
                 <div class="col">
-                    <a href="{% url 'person' result.id %}">
-                        <div class="card text-center h-100">
-                            <img src="{% if result.profile_path %}https://image.tmdb.org/t/p/original/{{ result.profile_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}"
-                            class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h6 class="card-title">{{ result.name }}</h6>
-                            </div>
-                            <div class="card-footer mt-auto">
-                                <small class="text-body-dark"><i class="fa-solid fa-user"></i> Pessoa - {{ result.known_for_department }}</small>
-                            </div>
+                    <a href="{% url 'person' result.id %}" class="card text-center h-100 no-underline">
+                        <img src="{% if result.profile_path %}https://image.tmdb.org/t/p/original/{{ result.profile_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}"
+                        class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h6 class="card-title">{{ result.name }}</h6>
+                        </div>
+                        <div class="card-footer mt-auto">
+                            <small class="text-body-dark"><i class="fa-solid fa-user"></i> Pessoa - {{ result.known_for_department }}</small>
                         </div>
                     </a>
                 </div>
