@@ -86,6 +86,7 @@ def movie(request,movieId):
     data_moviedb = moreMovie(movieId)
     cast_moviedb, crew_moviedb = castMovie(movieId)
     provider_moviedb = providersMovie(movieId)
+    similar_moviedb = similarMovie(movieId)
 
     return render(request, 'critics/movie.html', 
                   {
@@ -164,7 +165,12 @@ def person(request,personId):
     movies_moviedb = movieCreditsPerson(personId)
     tv_moviedb = TvCreditsPerson(personId)
 
-    return render(request, 'critics/person.html', {'person': data_moviedb,'movies': movies_moviedb,'tvSeries':tv_moviedb,})
+    return render(request, 'critics/person.html', 
+                  {
+                    'person': data_moviedb,
+                    'movies': movies_moviedb,
+                    'tvSeries':tv_moviedb,
+                    })
 
 def search(request,page):
     formLog = LoginForms()
@@ -175,8 +181,10 @@ def search(request,page):
                     'pageTitle': 'Pesquisa - Critics',
                     'searchText': searchText,
                     'results': searchResults,
+                    'previousPage': (searchResults['page'] - 1) if searchResults['page'] != 1 else None,
+                    'nextPage': (searchResults['page'] + 1) if searchResults['page'] != searchResults['total_pages'] else None,
                     'quant_results': len(searchResults['results']),
-                    "formLog": formLog,
+                    'formLog': formLog,
                     })
 
 def logout(request):

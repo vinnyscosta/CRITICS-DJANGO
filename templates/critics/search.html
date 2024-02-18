@@ -6,13 +6,12 @@
 
     <div class="row justify-content-between">
         <div class="col text-white text-start">
-            <h6 class="text-white text-center">Resultados da busca '{{ searchText }}'</h6>                   
+            <h6 class="text-white text-start">Resultados para '{{ searchText }}'</h6>                   
         </div>
         <div class="col text-white text-end">
-            <h6 class="text-white text-center">Mostrando {{ quant_results }} de {{ results.total_pages }} resultados.</h6>                   
+            <h6 class="text-white text-end">Mostrando {{ quant_results }} de {{ results.total_results }} resultados.</h6>                   
         </div>
     </div>
-
 
     <br>
 
@@ -67,7 +66,7 @@
                                 <h6 class="card-title">{{ result.name }}</h6>
                             </div>
                             <div class="card-footer mt-auto">
-                                <small class="text-body-dark"><i class="fa-solid fa-tv"></i> Pessoa - {{ result.known_for_department }}</small>
+                                <small class="text-body-dark"><i class="fa-solid fa-user"></i> Pessoa - {{ result.known_for_department }}</small>
                             </div>
                         </div>
                     </a>
@@ -77,6 +76,56 @@
 
             {% endfor %}
 
+        </div>
+
+        <br>
+
+        <div class="row justify-content-between">
+            <div class="col text-white text-start">
+                <h6 class="text-white text-start">Resultados para '{{ searchText }}'</h6>                   
+            </div>
+            <div class="col text-white text-end">
+                <h6 class="text-white text-end">Mostrando {{ quant_results }} de {{ results.total_results }} resultados.</h6>                   
+            </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+            <div class="col">
+                {% if previousPage %}
+                    <form method="post" action="{% url 'search' previousPage %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="searchText" value="{{ searchText }}">
+                        <button type="submit" class="btn btn-secondary" name="page_number" value="{{ previousPage }}"><</button>
+                    </form>
+                {% endif %}
+            </div>
+            
+            <div class="col text-center">
+                <button type="submit" class="btn btn-secondary" disabled>
+                    {{ results.page }}
+                </button>
+            </div>
+            
+            
+            <div class="col text-end">
+                {% if nextPage %}
+                    <form method="post" action="{% url 'search' nextPage %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="searchText" value="{{ searchText }}">
+                        <button type="submit" class="btn btn-secondary" name="page_number" value="{{ nextPage }}">></button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+            <div class="col text-white text-center">
+                <h6 class="text-white text-center">Página {{ results.page }} de {{ results.total_results }}</h6>                   
+            </div>
         </div>
     
     {% else %}
@@ -89,22 +138,3 @@
 
 </div>
 {% endblock %}
-
-
-
-<!-- <div class="col">
-    <div class="card mb-3" style="max-width: 100%;">
-        <div class="row g-0">
-            <div class="col-md-4">
-                <img src="https://image.tmdb.org/t/p/original/hac9q4lV6XSJVQikC4dxgGLACHZ.jpg" 
-                class="img-fluid rounded-start" alt="..." style="max-height: auto;">
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h5 class="card-title">As Marvels</h5>
-                    <p class="card-text"><small class="text-body-dark"><i class="fa-solid fa-film"></i> Filme</small></p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> -->
