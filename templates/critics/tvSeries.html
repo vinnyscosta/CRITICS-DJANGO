@@ -24,13 +24,15 @@
             class="d-block mx-auto rounded" style="max-height: 500px;">
         </div>
         <div class="col-sm-6 col-md-8">
-            
+
             {% if tvSeries.genres %}
-                <p class="text-white">
-                    {% for genre in tvSeries.genres %}
-                        | {{ genre.name }}
-                    {% endfor %}
-                </p>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        {% for genre in tvSeries.genres %}
+                        <li class="breadcrumb-item text-white">{{ genre.name }}</li>
+                        {% endfor %}
+                    </ol>
+                </nav>
             {% endif %}
 
             <p class="text-white">inicio {{ tvSeries.first_air_date }}</p>
