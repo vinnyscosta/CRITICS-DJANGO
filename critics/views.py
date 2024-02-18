@@ -84,7 +84,7 @@ def movie(request,movieId):
         return redirect('index')
     
     data_moviedb = moreMovie(movieId)
-    cast_moviedb = castMovie(movieId)
+    cast_moviedb, crew_moviedb = castMovie(movieId)
     provider_moviedb = providersMovie(movieId)
 
     return render(request, 'critics/movie.html', 
@@ -92,6 +92,7 @@ def movie(request,movieId):
                     'pageTitle':data_moviedb['title'] if data_moviedb else 'Pagina não encontrada',
                     'movie': data_moviedb,
                     'cast': cast_moviedb,
+                    'crew': crew_moviedb,
                     'providers': provider_moviedb,
                     })
 
@@ -102,7 +103,7 @@ def tvSeries(request,tvSeriesId):
         return redirect('index')
     
     data_moviedb = moreTvSeries(tvSeriesId)
-    cast_moviedb = castTvSeries(tvSeriesId)
+    cast_moviedb,crew_moviedb = castTvSeries(tvSeriesId)
     provider_moviedb = providersTvSeries(tvSeriesId)
 
     return render(request, 'critics/tvSeries.html', 
@@ -110,6 +111,7 @@ def tvSeries(request,tvSeriesId):
                     'pageTitle': f"TV Show - {data_moviedb['name']}" if data_moviedb else 'Pagina não encontrada',
                     'tvSeries': data_moviedb,
                     'cast': cast_moviedb,
+                    'crew': crew_moviedb,
                     'providers': provider_moviedb,
                     }) 
 
@@ -121,7 +123,7 @@ def season(request,tvSeriesId,seasonNumber):
     
     season_moviedb = moreSeason(tvSeriesId,seasonNumber)
     cast_moviedb = castSeason(tvSeriesId,seasonNumber)
-    provider_moviedb = providersSeason(tvSeriesId)
+    provider_moviedb = providersSeason(tvSeriesId,seasonNumber)
 
     return render(request, 'critics/season.html', 
                   {
@@ -140,7 +142,7 @@ def episode(request,tvSeriesId,seasonNumber,episodeNumber):
     
     episode_moviedb = moreEpisode(tvSeriesId,seasonNumber,episodeNumber)
     cast_moviedb = castEpisode(tvSeriesId,seasonNumber,episodeNumber)
-    provider_moviedb = providersSeason(tvSeriesId)
+    provider_moviedb = providersSeason(tvSeriesId,seasonNumber)
 
     return render(request, 'critics/episode.html', 
                   {
@@ -167,8 +169,15 @@ def person(request,personId):
 def search(request,page):
     formLog = LoginForms()
     searchText = request.POST.get('searchText')
-    searchResults, total_pages = searchMovieDb(searchText,page)
-    return render(request, 'critics/search.html', {'results': searchResults,"formLog": formLog})
+    searchResults = searchMovieDb(searchText,page)
+    return render(request, 'critics/search.html', 
+                  {
+                    'pageTitle': 'Pesquisa - Critics',
+                    'searchText': searchText,
+                    'results': searchResults,
+                    'quant_results': len(searchResults['results']),
+                    "formLog": formLog,
+                    })
 
 def logout(request):
     auth.logout(request)

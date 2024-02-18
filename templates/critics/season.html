@@ -41,7 +41,7 @@
                 </h4>
 
                 <div>
-                    <div class="row flex-nowrap overflow-x-auto overflow-y-auto scrolling-container" style="max-height: 220px;">
+                    <div class="row flex-nowrap overflow-x-auto overflow-y-auto scrolling-container" style="max-height: 240px;">
                         {% for person in cast %}
                         <div class="col-auto text-center" style="max-width: 120px;">
                             <figure class="figure">
@@ -50,7 +50,7 @@
                                                 class="figure-img img-fluid rounded img-thumbnail" alt="..." style="max-height: 100px;">
                                         </a>
                                         <figcaption class="text-white text-break text-wrap">{{ person.name }}</figcaption>
-                                        <figcaption class="text-white text-break text-wrap fst-italic figure-caption">{{ person.known_for_department }}</figcaption>
+                                        <figcaption class="text-white text-break text-wrap fst-italic figure-caption">{{ person.character }}</figcaption>
                                     </figure>
                                 </div>
                         {% endfor %}
@@ -58,8 +58,11 @@
                 </div>
 
             {% endif %}
-
+            
             {% if providers %}
+            
+                <br>
+
                 <div class="row text-center">
                     
                     {% if providers.rent %}
@@ -100,11 +103,11 @@
 
         </div>
     </div>
-
-    <br>
-
+    
     {% if season.episodes %}
-
+    
+        <br>
+    
         <h4 class="text-white">
             Episódios
         </h4>

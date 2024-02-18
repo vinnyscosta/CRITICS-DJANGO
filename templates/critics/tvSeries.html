@@ -138,8 +138,10 @@
 
     {% if cast %}
 
+        <br>
+
         <h4 class="text-white">
-            Elenco e Equipe
+            Elenco
         </h4>
 
         <div>
@@ -152,13 +154,40 @@
                                         class="figure-img img-fluid rounded img-thumbnail" alt="..." style="max-height: 100px;">
                                 </a>
                                 <figcaption class="text-white text-break text-wrap">{{ person.name }}</figcaption>
-                                <figcaption class="text-white text-break text-wrap fst-italic figure-caption">{{ person.known_for_department }}</figcaption>
+                                <figcaption class="text-white text-break text-wrap fst-italic figure-caption">{{ person.character }}</figcaption>
                             </figure>
                         </div>
                 {% endfor %}
             </div>
         </div>
+    
+    {% endif %}
 
+    {% if crew %}
+
+        <br>
+
+        <h4 class="text-white">
+            Equipe
+        </h4>
+
+        <div>
+            <div class="row flex-nowrap overflow-x-auto overflow-y-auto scrolling-container" style="max-height: 220px;">
+                {% for person in crew %}
+                <div class="col-auto text-center" style="max-width: 120px;">
+                    <figure class="figure">
+                                <a href="{% url 'person' person.id %}">
+                                    <img src="{% if person.profile_path %}https://image.tmdb.org/t/p/original/{{ person.profile_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}" 
+                                        class="figure-img img-fluid rounded img-thumbnail" alt="..." style="max-height: 100px;">
+                                </a>
+                                <figcaption class="text-white text-break text-wrap">{{ person.name }}</figcaption>
+                                <figcaption class="text-white text-break text-wrap fst-italic figure-caption">{{ person.job }}</figcaption>
+                            </figure>
+                        </div>
+                {% endfor %}
+            </div>
+        </div>
+    
     {% endif %}
 
     <br>

@@ -2,8 +2,109 @@
 {% load static %}
 {% block content %}
 
-    {% for result in results %}
-        <p class="text-white">{{ result }}</p>
-    {% endfor %}
+<div class="container-xl">
 
+    <div class="row justify-content-between">
+        <div class="col text-white text-start">
+            <h6 class="text-white text-center">Resultados da busca '{{ searchText }}'</h6>                   
+        </div>
+        <div class="col text-white text-end">
+            <h6 class="text-white text-center">Mostrando {{ quant_results }} de {{ results.total_pages }} resultados.</h6>                   
+        </div>
+    </div>
+
+
+    <br>
+
+    {% if results.results %}
+
+        <div class="row row-cols-1 row-cols-md-5 g-4">
+
+            {% for result in results.results %}
+
+                {% if result.media_type == 'movie' %}
+
+                <div class="col">
+                    <a href="{% url 'movie' result.id %}">
+                        <div class="card text-center h-100">
+                            <img src="{% if result.poster_path %}https://image.tmdb.org/t/p/original/{{ result.poster_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}"
+                            class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h6 class="card-title">{{ result.title }}</h6>
+                            </div>
+                            <div class="card-footer mt-auto">
+                                <small class="text-body-dark"><i class="fa-solid fa-film"></i> Filme</small>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                {% elif result.media_type == 'tv' %}
+
+                <div class="col">
+                    <a href="{% url 'tvSeries' result.id %}">
+                        <div class="card text-center h-100">
+                            <img src="{% if result.poster_path %}https://image.tmdb.org/t/p/original/{{ result.poster_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}"
+                            class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h6 class="card-title">{{ result.name }}</h6>
+                            </div>
+                            <div class="card-footer mt-auto">
+                                <small class="text-body-dark"><i class="fa-solid fa-tv"></i> Série de TV</small>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                    
+                {% elif result.media_type == 'person' %}
+
+                <div class="col">
+                    <a href="{% url 'person' result.id %}">
+                        <div class="card text-center h-100">
+                            <img src="{% if result.profile_path %}https://image.tmdb.org/t/p/original/{{ result.profile_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}"
+                            class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h6 class="card-title">{{ result.name }}</h6>
+                            </div>
+                            <div class="card-footer mt-auto">
+                                <small class="text-body-dark"><i class="fa-solid fa-tv"></i> Pessoa - {{ result.known_for_department }}</small>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                    
+                {% endif %}
+
+            {% endfor %}
+
+        </div>
+    
+    {% else %}
+
+        <p>Sem Resultados para a busca.</p>
+    
+    {% endif %}
+
+    <br>
+
+</div>
 {% endblock %}
+
+
+
+<!-- <div class="col">
+    <div class="card mb-3" style="max-width: 100%;">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="https://image.tmdb.org/t/p/original/hac9q4lV6XSJVQikC4dxgGLACHZ.jpg" 
+                class="img-fluid rounded-start" alt="..." style="max-height: auto;">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">As Marvels</h5>
+                    <p class="card-text"><small class="text-body-dark"><i class="fa-solid fa-film"></i> Filme</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
