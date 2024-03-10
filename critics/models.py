@@ -6,7 +6,16 @@ from django.contrib.auth.models import User
 
 class Post(models.Model):
 
+    OPCOES_CATEGORIA = [
+        ("MOVIE", "Filme"),
+        ("TVSERIES", "Série de TV"),
+        ("SEASON", "Temporada"),
+        ("EPISODE", "Episódio"),
+        ("PERSON", "Pessoa"),
+    ]
+
     id_movieDB = models.CharField(max_length=20, null=False, blank=False)
+    type_movieDB = models.CharField(choices=OPCOES_CATEGORIA, max_length=10, null=False, blank=False)
     image_movieDB = models.CharField(max_length=150, null=False, blank=False)
     text_post = models.TextField(null=False, blank=False)
     data_post = models.DateTimeField(default=datetime.now, blank=False)
