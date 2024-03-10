@@ -12,7 +12,7 @@
                 </li>
                 {% if not request.user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Login</a>
+                        <a class="nav-link" data-bs-toggle="modal" data-bs-target="#modalLogin">Login</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'cadastro' %}">Cadastro</a>
@@ -34,8 +34,13 @@
                     <a class="nav-link" href="#">Timeline</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Trending</a>
+                    <a class="nav-link" href="{% url 'trending' %}">Trending</a>
                 </li>
+                {% if post %}
+                <li class="nav-item">
+                    <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#modalPost">Post</button>
+                </li>
+                {% endif %}
             </ul>
             <form class="d-flex" role="search" action="{% url 'search' 1 %}" method="POST">
                 {% csrf_token %}
@@ -45,22 +50,11 @@
         </div>
     </div>
 </nav>
+
 <br>
 
-<div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-header">
-        <img src="..." class="rounded me-2" alt="...">
-        <strong class="me-auto">Bootstrap</strong>
-        <small>11 mins ago</small>
-        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
-    <div class="toast-body">
-      Hello, world! This is a toast message.
-    </div>
-</div>
-
 {% if not request.user.is_authenticated %}
-    <div class="modal fade bg-dark" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade bg-dark" id="modalLogin" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -84,6 +78,24 @@
                         <button type="submit" class="btn btn-success">Logar</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+{% elif post %}
+    <div class="modal fade bg-dark" id="modalPost" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Postar sobre {{ postInfo.name }}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Modal body text goes here.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
             </div>
         </div>
     </div>

@@ -41,7 +41,13 @@ def index(request):
             messages.error(request, f"Erro ao efetuar login!")
             return redirect('index')
 
-    return render(request, 'critics/index.html', {'people':people_moviedb, 'movies': movies_moviedb,'tvSeries': tvSeries_moviedb,'formLog': formLog})
+    return render(request, 'critics/index.html', 
+                  {
+                    'people':people_moviedb, 
+                    'movies': movies_moviedb,
+                    'tvSeries': tvSeries_moviedb,
+                    'formLog': formLog,
+                    })
 
 def cadastro(request):
     if not request.user.is_authenticated:
@@ -114,6 +120,9 @@ def tvSeries(request,tvSeriesId):
                     'cast': cast_moviedb,
                     'crew': crew_moviedb,
                     'providers': provider_moviedb,
+                    'post':True,
+                    'postType':'tvSeries',
+                    'postInfo':data_moviedb,
                     }) 
 
 def season(request,tvSeriesId,seasonNumber):
@@ -170,6 +179,9 @@ def person(request,personId):
                     'person': data_moviedb,
                     'movies': movies_moviedb,
                     'tvSeries':tv_moviedb,
+                    'post':True,
+                    'postType':'person',
+                    'postInfo':data_moviedb,
                     })
 
 def search(request,page):
@@ -185,6 +197,22 @@ def search(request,page):
                     'nextPage': (searchResults['page'] + 1) if searchResults['page'] != searchResults['total_pages'] else None,
                     'quant_results': len(searchResults['results']),
                     'formLog': formLog,
+                    })
+
+def trending(request):
+    
+    if not request.user.is_authenticated:
+        messages.error(request, "Usuário não logado")
+        return redirect('index')
+    
+    movies_moviedb = trendingMovie()
+    tvSeries_moviedb = trendingTvSeries()
+    
+    return render(request, 'critics/trending.html', 
+                  {
+                    'pageTitle': 'Trending - Critics',
+                    'movies': movies_moviedb,
+                    'tvSeries': tvSeries_moviedb,
                     })
 
 def logout(request):

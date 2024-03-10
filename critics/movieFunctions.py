@@ -8,6 +8,13 @@ def discoverMovie():
 
     return data_moviedb
 
+def trendingMovie():
+    url_moviedb = f"{settings.URL_THE_MOVIE_DB}trending/movie/week?language=pt-BR"
+    response = requests.get(url_moviedb, headers=settings.HEADERS_THE_MOVIE_DB)
+    data_moviedb = response.json().get('results', []) if response.status_code == 200 else []
+
+    return data_moviedb
+
 def moreMovie(movieId):
     url_moviedb = f"{settings.URL_THE_MOVIE_DB}movie/{movieId}?language=pt-BR"
     response = requests.get(url_moviedb, headers=settings.HEADERS_THE_MOVIE_DB)

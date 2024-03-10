@@ -17,7 +17,7 @@
     </h3>
     <div class="row">
         <div class="col-6 col-md-4">
-            <img src="{% if season.poster_path %}https://image.tmdb.org/t/p/original/{{ season.poster_path }}{% else %}{% static 'no-backdrop_path.jpeg' %}{% endif %}" alt="{{ season.title }} Poster" 
+            <img src="{% if season.poster_path %}https://image.tmdb.org/t/p/original/{{ season.poster_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}" alt="{{ season.title }} Poster" 
             class="d-block mx-auto rounded" style="max-height: 500px;">
         </div>
         <div class="col-sm-6 col-md-8">

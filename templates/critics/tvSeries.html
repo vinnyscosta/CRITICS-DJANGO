@@ -13,7 +13,16 @@
 
     <h3 class="text-white text-center">
         {{ tvSeries.name }}
-        <span class="badge {% if tvSeries.status == 'Canceled' %}text-bg-danger{% else %}text-bg-success{% endif %}">
+        <span class="badge 
+        {% if tvSeries.status == 'Canceled' %}
+            text-bg-danger
+        {% elif tvSeries.status == 'Ended' %}
+            text-bg-primary
+        {% elif tvSeries.status == 'Returning Series' %}
+            text-bg-success
+        {% else %}
+            text-bg-warning
+        {% endif %}">
             {{ tvSeries.status }}
         </span>                       
     </h3>

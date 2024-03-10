@@ -6,16 +6,44 @@
         <h3 class="text-center text-white">Descubra Atores</h3>
         <div class="row flex-nowrap overflow-x-auto overflow-y-auto scrolling-container" style="max-height: 220px;">
             {% for person in people %}
+            <div class="card text-bg-dark border-dark mb-3" style="max-width: 120px;">
+
+                <img src="
+                {% if person.profile_path %}
+                    https://image.tmdb.org/t/p/original/{{ person.profile_path }}
+                {% else %}
+                    {% static 'no-image.jpeg' %}
+                {% endif %}"
+                class="card-img" style="max-width: 120px;" alt="...">
+
+                <a href="{% url 'person' person.id %}" class="no-underline text-bg-dark">
+                    <div class="card-img-overlay text-truncate" style="max-width: 100px;">
+                        <div style="position: absolute; bottom: 0; height: 30%; background-color: rgba(0, 0, 0, 0.5);">
+                            <h6 class="card-title text-break text-wrap text-center">{{ person.name }}</h6>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <br>
+
+    <div class="container-xl">
+        <h3 class="text-center text-white">Descubra Atores</h3>
+        <div class="row flex-nowrap overflow-x-auto overflow-y-auto scrolling-container" style="max-height: 220px;">
+            {% for person in people %}
             <div class="col-auto text-center" style="max-width: 120px;">
                 <figure class="figure">
-                            <a href="{% url 'person' person.id %}">
-                                <img src="{% if person.profile_path %}https://image.tmdb.org/t/p/original/{{ person.profile_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}" 
-                                    class="figure-img img-fluid rounded img-thumbnail" alt="..." style="max-height: 100px;">
-                            </a>
-                            <figcaption class="text-white text-break text-wrap">{{ person.name }}</figcaption>
-                            <figcaption class="text-white text-break text-wrap fst-italic figure-caption">{{ person.known_for_department }}</figcaption>
-                        </figure>
-                    </div>
+                    <a href="{% url 'person' person.id %}">
+                        <img src="{% if person.profile_path %}https://image.tmdb.org/t/p/original/{{ person.profile_path }}{% else %}{% static 'no-image.jpeg' %}{% endif %}" 
+                            class="figure-img img-fluid rounded img-thumbnail" alt="..." style="max-height: 100px;">
+                    </a>
+                    <figcaption class="text-white text-break text-wrap">{{ person.name }}</figcaption>
+                    <figcaption class="text-white text-break text-wrap fst-italic figure-caption">{{ person.known_for_department }}</figcaption>
+                </figure>
+            </div>
             {% endfor %}
         </div>
     </div>
