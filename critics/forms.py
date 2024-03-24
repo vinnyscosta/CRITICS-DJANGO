@@ -92,3 +92,17 @@ class CadastroForms(forms.Form):
                     raise forms.ValidationError('Senhas não são iguais!')
                 else:
                     return senha_2
+                
+
+class PostForm(forms.Form):
+    text_post = forms.CharField(
+        label="Review",
+        required=True,
+        max_length=200,
+        widget=forms.Textarea(  # Usando Textarea em vez de TextInput
+            attrs={
+                "class": "form-control",
+                "placeholder": "Digite seu review aqui"
+            }
+        )
+    )

@@ -1,7 +1,7 @@
 import requests
 from django.shortcuts import render, redirect
 from django.contrib import auth, messages
-from critics.forms import LoginForms, CadastroForms
+from critics.forms import LoginForms, CadastroForms, PostForm
 
 from django.contrib.auth.models import User
 from critics.searchFunctions import *
@@ -166,6 +166,8 @@ def episode(request,tvSeriesId,seasonNumber,episodeNumber):
 
 def person(request,personId):
 
+    formPost = PostForm()
+
     if not request.user.is_authenticated:
         messages.error(request, "Usuário não logado")
         return redirect('index')
@@ -179,9 +181,11 @@ def person(request,personId):
                     'person': data_moviedb,
                     'movies': movies_moviedb,
                     'tvSeries':tv_moviedb,
-                    'post':True,
-                    'postType':'person',
-                    'postInfo':data_moviedb,
+                    'post':{
+                        'type':'person',
+                        'info':data_moviedb,
+                        'form':formPost,
+                    }
                     })
 
 def search(request,page):
