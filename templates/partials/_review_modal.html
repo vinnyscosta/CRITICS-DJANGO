@@ -1,0 +1,116 @@
+{% load static %}
+
+{% if post and request.user.is_authenticated %}
+
+    <div class="modal fade bg-dark" id="modalPost" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Postar sobre {{ post.info.name }}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{% url 'index' %}" method="POST">
+                    <div class="modal-body">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-6 col-md-4">
+                                <img src="
+                                        {% if post.info.profile_path %}
+                                            https://image.tmdb.org/t/p/original/{{ post.info.profile_path }}
+                                        {% else %}
+                                            {% static 'no-image.jpeg' %}
+                                        {% endif %}" 
+                                    alt="{{ movie.title }} Poster" 
+                                class="d-block mx-auto rounded" style="max-width: 100%;">
+
+                                <div class="star-rating"> 
+                                    <i class="fa fa-star" id="star-1" data-rating="1"></i>
+                                    <i class="fa fa-star" id="star-2" data-rating="2"></i>
+                                    <i class="fa fa-star" id="star-3" data-rating="3"></i>
+                                    <i class="fa fa-star" id="star-4" data-rating="4"></i>
+                                    <i class="fa fa-star" id="star-5" data-rating="5"></i>
+                                    <i class="fas fa-times" id="cancel-rating" onclick="delete_rating()"></i>
+                                    <i class="fas fa-heart" id="favorite"></i>
+                                    <input type="hidden" id="rating-value" name="rating-value" class="rating-value" value="3">
+                                    <input type="checkbox" id="favorite-check" name="favorite-check" class="form-check-input" value="" hidden>
+                                </div>
+
+                            </div>
+
+                            <div class="col-sm-6 col-md-8" style="margin-bottom: 10px;">
+                                {% for field in post.form.visible_fields %}
+                                    <label for="{{ field.id_for_label }}" 
+                                        style="color:#D9D9D9; margin-bottom: 5px;">{{ field.label }}</label>
+                                    {{ field }}
+                                {% endfor %}
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-outline-success">Postar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endif %}
+
+<style>
+    .star-rating {
+        /* line-height:32px; */
+        font-size:1.25em;
+        cursor: pointer;
+    }
+
+    .star-active{
+        color: #FFD43B;
+    }
+
+    .heart-active{
+        color: #ff3d3d;
+    }
+</style>
+
+<script>
+    function star_rating_add(number) {
+        var stars = document.querySelectorAll('.star-rating i.fa-star');
+        stars.forEach(function (star, index) {
+            if (index < number) {
+                star.classList.add('star-active');
+                rating.value = index + 1
+            } else {
+                star.classList.remove('star-active');
+            }
+        });
+    }
+    
+    var stars = document.querySelectorAll('.star-rating i.fa-star');
+    stars.forEach(function(star, index) {
+        star.addEventListener('click', function() {
+            star_rating_add(index + 1);
+        });
+    });
+
+    function delete_rating(number) {
+        var stars = document.querySelectorAll('.star-rating i.fa-star');
+        stars.forEach(function (star, index) {
+            star.classList.remove('star-active');
+        });
+    }
+
+    var rating = document.getElementById('rating-value')
+
+    var favorite = document.getElementById('favorite')
+    var favorite_check = document.getElementById('favorite-check')
+    favorite.addEventListener('click', function() {
+        if(favorite.classList.contains('heart-active')){
+            favorite.classList.remove('heart-active');
+            favorite_check.checked = false;
+        }else{
+            favorite.classList.add('heart-active');
+            favorite_check.checked = true;
+        }
+    });
+</script>

@@ -1,4 +1,8 @@
 from django import forms
+from .models import Post
+from datetime import datetime
+
+import uuid
 
 class LoginForms(forms.Form):
     nome_login=forms.CharField(
@@ -92,17 +96,61 @@ class CadastroForms(forms.Form):
                     raise forms.ValidationError('Senhas não são iguais!')
                 else:
                     return senha_2
-                
 
-class PostForm(forms.Form):
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ["text_post", "publicado"]
+
     text_post = forms.CharField(
-        label="Review",
+        label="Post",
         required=True,
         max_length=200,
-        widget=forms.Textarea(  # Usando Textarea em vez de TextInput
+        widget=forms.Textarea(  
             attrs={
                 "class": "form-control",
-                "placeholder": "Digite seu review aqui"
+                "placeholder": "Digite seu post aqui"
             }
         )
     )
+    
+    publicado = forms.BooleanField(
+        label="Publicar",
+        required=True,
+        widget=forms.CheckboxInput(  # Corrigido para CheckboxInput
+            attrs={
+                "class": "form-check-input",
+                "type":"checkbox",
+                "role":"switch",
+                "checked": True
+            }
+        )
+    )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        text_post = cleaned_data.get("text_post")
+        publicado = cleaned_data.get("publicado")
+
+        if not text_post:
+            self.add_error('text_post', 'Este campo é obrigatório.')
+
+        return cleaned_data
+
+    def save(self, commit=True, id_movieDB=None, type_movieDB=None, user=None):
+        instance = super(PostForm, self).save(commit=False)
+        instance.id_movieDB = id_movieDB
+        instance.type_movieDB = type_movieDB
+        instance.user = user
+
+        while True:
+            new_id = str(uuid.uuid4())[:20]
+            if not Post.objects.filter(id_post=new_id).exists():
+                instance.id_post = new_id
+                break
+
+        if id_movieDB and type_movieDB and user and commit:
+            instance.save()
+
+        return instance
+        
