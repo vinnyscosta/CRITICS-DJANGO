@@ -89,10 +89,28 @@ def movie(request,movieId):
         messages.error(request, "Usuário não logado")
         return redirect('index')
     
+    if request.method == 'POST':
+        formPost = PostForm(request.POST)
+
+        if formPost.is_valid():
+            formPost.save(
+                id_movieDB=movieId, 
+                type_movieDB='MOVIE',  
+                user=request.user
+            )
+
+            formPost = PostForm()
+
+            messages.success(request, f"Post criado com sucesso!")
+            return redirect('index')
+        
+    else:
+        formPost = PostForm()
+    
     data_moviedb = moreMovie(movieId)
     cast_moviedb, crew_moviedb = castMovie(movieId)
     provider_moviedb = providersMovie(movieId)
-    similar_moviedb = similarMovie(movieId)
+    # similar_moviedb = similarMovie(movieId)
 
     return render(request, 'critics/movie.html', 
                   {
@@ -101,6 +119,14 @@ def movie(request,movieId):
                     'cast': cast_moviedb,
                     'crew': crew_moviedb,
                     'providers': provider_moviedb,
+                    'post':{
+                        'type':'movie',
+                        'info':data_moviedb,
+                        'form':formPost,
+                        'topic_id':movieId,
+                        'topic_aux1':None,
+                        'topic_aux2':None,
+                    },
                     })
 
 def tvSeries(request,tvSeriesId):
@@ -108,6 +134,24 @@ def tvSeries(request,tvSeriesId):
     if not request.user.is_authenticated:
         messages.error(request, "Usuário não logado")
         return redirect('index')
+    
+    if request.method == 'POST':
+        formPost = PostForm(request.POST)
+
+        if formPost.is_valid():
+            formPost.save(
+                id_movieDB=tvSeriesId, 
+                type_movieDB='TVSERIES',  
+                user=request.user
+            )
+
+            formPost = PostForm()
+
+            messages.success(request, f"Post criado com sucesso!")
+            return redirect('index')
+        
+    else:
+        formPost = PostForm()
     
     data_moviedb = moreTvSeries(tvSeriesId)
     cast_moviedb,crew_moviedb = castTvSeries(tvSeriesId)
@@ -120,9 +164,14 @@ def tvSeries(request,tvSeriesId):
                     'cast': cast_moviedb,
                     'crew': crew_moviedb,
                     'providers': provider_moviedb,
-                    'post':False,
-                    'postType':'tvSeries',
-                    'postInfo':data_moviedb,
+                    'post':{
+                        'type':'tvSeries',
+                        'info':data_moviedb,
+                        'form':formPost,
+                        'topic_id':tvSeriesId,
+                        'topic_aux1':None,
+                        'topic_aux2':None,
+                    },
                     }) 
 
 def season(request,tvSeriesId,seasonNumber):
@@ -130,6 +179,24 @@ def season(request,tvSeriesId,seasonNumber):
     if not request.user.is_authenticated:
         messages.error(request, "Usuário não logado")
         return redirect('index')
+    
+    if request.method == 'POST':
+        formPost = PostForm(request.POST)
+
+        if formPost.is_valid():
+            formPost.save(
+                id_movieDB=f"{tvSeriesId}-{seasonNumber}", 
+                type_movieDB='SEASON',  
+                user=request.user
+            )
+
+            formPost = PostForm()
+
+            messages.success(request, f"Post criado com sucesso!")
+            return redirect('index')
+        
+    else:
+        formPost = PostForm()
     
     season_moviedb = moreSeason(tvSeriesId,seasonNumber)
     cast_moviedb = castSeason(tvSeriesId,seasonNumber)
@@ -142,6 +209,14 @@ def season(request,tvSeriesId,seasonNumber):
                     'season': season_moviedb,
                     'cast': cast_moviedb,
                     'providers': provider_moviedb,
+                    'post':{
+                        'type':'season',
+                        'info':season_moviedb,
+                        'form':formPost,
+                        'topic_id':tvSeriesId,
+                        'topic_aux1':seasonNumber,
+                        'topic_aux2':None,
+                    },
                     }) 
 
 def episode(request,tvSeriesId,seasonNumber,episodeNumber):
@@ -149,6 +224,24 @@ def episode(request,tvSeriesId,seasonNumber,episodeNumber):
     if not request.user.is_authenticated:
         messages.error(request, "Usuário não logado")
         return redirect('index')
+    
+    if request.method == 'POST':
+        formPost = PostForm(request.POST)
+
+        if formPost.is_valid():
+            formPost.save(
+                id_movieDB=f"{tvSeriesId}-{seasonNumber}-{episodeNumber}", 
+                type_movieDB='EPISODE',  
+                user=request.user
+            )
+
+            formPost = PostForm()
+
+            messages.success(request, f"Post criado com sucesso!")
+            return redirect('index')
+        
+    else:
+        formPost = PostForm()
     
     episode_moviedb = moreEpisode(tvSeriesId,seasonNumber,episodeNumber)
     cast_moviedb = castEpisode(tvSeriesId,seasonNumber,episodeNumber)
@@ -162,9 +255,21 @@ def episode(request,tvSeriesId,seasonNumber,episodeNumber):
                     'episode': episode_moviedb,
                     'cast': cast_moviedb,
                     'providers': provider_moviedb,
+                    'post':{
+                        'type':'episode',
+                        'info':episode_moviedb,
+                        'form':formPost,
+                        'topic_id':tvSeriesId,
+                        'topic_aux1':seasonNumber,
+                        'topic_aux2':episodeNumber,
+                    },
                     }) 
 
 def person(request,personId):
+
+    if not request.user.is_authenticated:
+        messages.error(request, "Usuário não logado")
+        return redirect('index')
 
     if request.method == 'POST':
         formPost = PostForm(request.POST)
@@ -183,10 +288,6 @@ def person(request,personId):
         
     else:
         formPost = PostForm()
-
-    if not request.user.is_authenticated:
-        messages.error(request, "Usuário não logado")
-        return redirect('index')
     
     data_moviedb = morePerson(personId)
     movies_moviedb = movieCreditsPerson(personId)
@@ -201,7 +302,10 @@ def person(request,personId):
                         'type':'person',
                         'info':data_moviedb,
                         'form':formPost,
-                    }
+                        'topic_id':personId,
+                        'topic_aux1':None,
+                        'topic_aux2':None,
+                    },
                     })
 
 def search(request,page):

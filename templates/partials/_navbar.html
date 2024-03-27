@@ -23,8 +23,10 @@
                             {{ request.user }}
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Perfil</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="#">Meu Perfil</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Posts</a></li>
+                            <li><a class="dropdown-item" href="#">Reviews</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                         </ul>
@@ -37,9 +39,9 @@
                     <a class="nav-link" href="{% url 'trending' %}">Trending</a>
                 </li>
                 {% if post %}
-                <li class="nav-item">
-                    <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#modalPost">Post</button>
-                </li>
+                    <li class="nav-item">
+                        <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#modalPost">Post</button>
+                    </li>
                 {% endif %}
             </ul>
             <form class="d-flex" role="search" action="{% url 'search' 1 %}" method="POST">

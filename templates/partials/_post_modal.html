@@ -9,7 +9,14 @@
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Postar sobre {{ post.info.name }}</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{% url 'person' person.id %}" method="POST">
+                
+                {% if post.topic_aux2 %}
+                <form action="{% url post.type post.topic_id post.topic_aux1 post.topic_aux2 %}" method="POST">
+                {% elif post.topic_aux1 %}
+                <form action="{% url post.type post.topic_id post.topic_aux1 %}" method="POST">
+                {% else %}
+                <form action="{% url post.type post.topic_id %}" method="POST">
+                {% endif %}
                     <div class="modal-body">
                         {% csrf_token %}
                         <div class="row">
@@ -17,6 +24,10 @@
                                 <img src="
                                         {% if post.info.profile_path %}
                                             https://image.tmdb.org/t/p/original/{{ post.info.profile_path }}
+                                        {% elif post.info.poster_path %}
+                                            https://image.tmdb.org/t/p/original/{{ post.info.poster_path }}
+                                        {% elif post.info.still_path %}
+                                            https://image.tmdb.org/t/p/original/{{ post.info.still_path }}
                                         {% else %}
                                             {% static 'no-image.jpeg' %}
                                         {% endif %}" 
@@ -41,9 +52,10 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Postar</button>
+                        <button type="submit" class="btn btn-outline-success">Postar</button>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>
