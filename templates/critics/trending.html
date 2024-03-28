@@ -22,7 +22,8 @@
         </ul>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade text-bg-dark show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                <div class="row row-cols-1 row-cols-md-2 g-4">
+                <br>
+                <div class="row row-cols-1 row-cols-md-4 g-4">
                     {% for movie in movies %}
                     <div class="col">
                         <div class="card text-bg-dark">
@@ -39,7 +40,8 @@
                 </div>
             </div>
             <div class="tab-pane fade text-bg-dark" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                <div class="row row-cols-1 row-cols-md-2 g-4">
+                <br>
+                <div class="row row-cols-1 row-cols-md-4 g-4">
                     {% for tvSerie in tvSeries %}
                     <div class="col">
                         <div class="card text-bg-dark">
@@ -56,15 +58,16 @@
                 </div>
             </div>
             <div class="tab-pane fade text-bg-dark" id="person" role="tabpanel" aria-labelledby="profile-tab">
+                <br>
                 <div class="row row-cols-2 row-cols-md-5 g-4">
-                    {% for tvSerie in tvSeries %}
+                    {% for person in people %}
                     <div class="col">
                         <div class="card text-bg-dark">
-                            <a href="{% url 'tvSeries' tvSerie.id %}" class="text-bg-dark">
-                                <img src="https://image.tmdb.org/t/p/original//l5AKkg3H1QhMuXmTTmq1EyjyiRb.jpg" class="card-img" alt="...">
+                            <a href="{% url 'person' person.id %}" class="text-bg-dark">
+                                <img src="https://image.tmdb.org/t/p/original/{{ person.profile_path }}" class="card-img" alt="...">
                                 <div class="card-img-overlay" 
                                     style="background-color: rgba(0, 0, 0, 0.5);">
-                                    <h6 class="card-title">{{ tvSerie.name }}</h6>
+                                    <h6 class="card-title">{{ person.name }}</h6>
                                 </div>
                             </a>
                         </div>

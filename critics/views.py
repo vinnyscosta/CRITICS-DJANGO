@@ -331,12 +331,14 @@ def trending(request):
     
     movies_moviedb = trendingMovie()
     tvSeries_moviedb = trendingTvSeries()
+    people_moviedb = trendingPerson()
     
     return render(request, 'critics/trending.html', 
                   {
                     'pageTitle': 'Trending - Critics',
                     'movies': movies_moviedb,
                     'tvSeries': tvSeries_moviedb,
+                    'people':people_moviedb,
                     })
 
 def logout(request):

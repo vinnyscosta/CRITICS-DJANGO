@@ -8,6 +8,13 @@ def discoverPeople():
 
     return data_moviedb
 
+def trendingPerson():
+    url_moviedb = f"{settings.URL_THE_MOVIE_DB}trending/person/week?language=pt-BR"
+    response = requests.get(url_moviedb, headers=settings.HEADERS_THE_MOVIE_DB)
+    data_moviedb = response.json().get('results', []) if response.status_code == 200 else []
+
+    return data_moviedb
+
 def morePerson(personId):
     url_moviedb = f"{settings.URL_THE_MOVIE_DB}person/{personId}?language=pt-BR"
     print(url_moviedb)
