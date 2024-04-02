@@ -83,6 +83,14 @@ def cadastro(request):
         messages.info(request, "Não pode acessar a tela de cadastro pois já está logado !")
         return redirect('index')
 
+def my_profile(request):
+
+    if not request.user.is_authenticated:
+        messages.error(request, "Usuário não logado")
+        return redirect('index')
+
+    return render(request, 'critics/my-profile.html',)
+
 def movie(request,movieId):
 
     if not request.user.is_authenticated:

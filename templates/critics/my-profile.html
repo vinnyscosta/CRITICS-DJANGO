@@ -1,0 +1,49 @@
+{% extends 'shared/base.html' %}
+{% load static %}
+{% block content %}
+
+    <style>
+        .imagem-redonda {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 5px solid #ffffff;
+        }
+        .imagem-redonda img {
+            max-width: 100%;
+        }
+    </style>
+
+    <div class="container-xl">
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+            <div class="col">
+
+                <div class="imagem-redonda">
+                    <img src="{% static 'no-image.jpeg' %}" alt="Imagem Redonda">
+                </div>
+
+            </div>
+
+            <div class="col">
+
+                <h3 class="text-white text-start">
+                    {{ request.user }}
+                </h3>
+
+                <ul class="list-group list-group-flush list-group-horizontal">
+                    <li class="list-group-item">0 Posts</li>
+                    <li class="list-group-item">0 Reviews</li>
+                    <li class="list-group-item">0 Followers</li>
+                    <li class="list-group-item">0 Following</li>
+                    <li class="list-group-item">Edit Profile</li>
+                  </ul>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

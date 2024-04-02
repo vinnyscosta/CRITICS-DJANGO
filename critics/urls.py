@@ -1,9 +1,10 @@
 from django.urls import path
-from critics.views import index, search, movie, tvSeries, season, episode, person, logout, cadastro, trending
+from critics.views import *
 
 urlpatterns = [
     path('', index, name='index'),
     path('cadastro', cadastro, name='cadastro'),
+    path('my-profile', my_profile, name='my-profile'),
     path('trending', trending, name='trending'),
     path('search/<int:page>', search, name='search'),
     path('movie/<int:movieId>', movie, name='movie'),
